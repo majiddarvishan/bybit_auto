@@ -52,12 +52,20 @@ def put_order(sybmol: str, side: str, usdt: str, leverage: str, tp: str, sl: str
 
 def change_stop_loss(sybmol: str, sl: str) -> None:
     try:
-        resp = session.set_trading_stop(
-            category="linear", symbol=sybmol, stopLoss=sl, positionIdx=0)
+        resp = session.set_trading_stop(category="linear", symbol=sybmol, stopLoss=sl, positionIdx=0)
         print(resp)
     except InvalidRequestError as exp:
         print(f'{exp.status_code}, {exp.message}')
 
+def cancel_order(sybmol: str, order_id: str) -> None:
+    try:
+        resp = session.cancel_order(category="linear", symbol=sybmol, orderId=order_id)
+        print(resp)
+    except InvalidRequestError as exp:
+        print(f'{exp.status_code}, {exp.message}')
 
-# put_order("BTCUSDT", "Sell", 200, "30", "28000", "30000")
+order_id = put_order("BTCUSDT", "Sell", 200, "30", "28000", "30000")
 change_stop_loss("BTCUSDT", "28500")
+cancel_order("BTCUSDT", "324347685434")
+
+
